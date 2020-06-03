@@ -24,9 +24,9 @@ jobs:
     
     - name: Create MySQL docker
       run: |
-        cd ci-test/mysql
+        cd mysql
         docker build -t bbsql .
-        cd ../..
+        cd ..
 
     - name: Fire docker container
       run: |
@@ -39,5 +39,5 @@ jobs:
 
     - name: Test code
       run: |
-        pip3 install -r ci-test/requirements.txt
-        python3 ./ci-test/test.py
+        pip3 install -r requirements.txt
+        python3 ./test.py
