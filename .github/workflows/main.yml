@@ -32,12 +32,16 @@ jobs:
       run: |
         docker run -p 3306:3306 --rm --name bbsql -d bbsql
 
+    - name: Docker ps
+      run: docker ps
+      
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.6
 
-    - name: Test code
-      run: |
-        pip3 install -r requirements.txt
-        python3 ./test.py
+    - name: Install deps
+      run: pip3 install -r requirements.txt
+      
+    - name: Run test
+      run: python3 ./test.py
