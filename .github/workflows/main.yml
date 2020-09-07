@@ -6,20 +6,51 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ '*' ]
   pull_request:
     branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  setup:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    - name: Create MySQL image
+      run: |
+        cd mysql
+        docker build -t bbsql .
+        cd ..
+
+    - name: Start MySQL container
+      run: |
+        docker run -p 3306:3306 --rm --name bbsql -d bbsql
+
+    - name: Start Cassandra container
+      run: |
+        cd cassandra
+        ./init_and_start_docker_container.sh 
+        cd ..
+      
+      
+    - name: Docker ps
+      run: docker ps
+      
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+
+    - name: Install deps
+      run: pip3 install -r requirements.txt
+
+  test:
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
     - uses: actions/checkout@v2
     
     - name: Create MySQL image
@@ -52,3 +83,10 @@ jobs:
       
     - name: Run test
       run: python3 ./test.py
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - run: echo ${{github.ref}} "deployed"
