@@ -1,0 +1,15 @@
+name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  publish: 
+    description: 'Who to greet'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - run: echo publish=${{ inputs.publish }}.
+      shell: bash
+
+    - run: echo if works
+      shell: bash
+      if: ${{ inputs.publish }}
