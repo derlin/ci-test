@@ -12,4 +12,4 @@ runs:
 
     - run: echo if works
       shell: bash
-      if: ${{ inputs.publish }}
+      if: inputs.publish
