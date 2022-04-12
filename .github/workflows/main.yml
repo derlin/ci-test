@@ -21,7 +21,7 @@ jobs:
       - run: echo "pull request or develop"
         if: >-
           github.event_name == 'pull_request' ||
-          github.ref == 'ref/heads/develop'
+          github.ref == 'refs/heads/develop'
 
       - run: echo "main and push and not ci"
         if: >- 
