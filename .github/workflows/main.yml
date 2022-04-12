@@ -27,10 +27,11 @@ jobs:
             github.ref == 'refs/heads/main' &&
             github.event_name == 'push' &&
             !startsWith(github.event.head_commit.message, 'ci')
-      - name: action test
-        uses: ./.github/action
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
         with:
-          publish: >-
+          push: >-
             ${{ 
             github.ref == 'refs/heads/main' &&
             github.event_name == 'push' &&
