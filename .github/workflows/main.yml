@@ -30,7 +30,9 @@ jobs:
       - name: action test
         uses: ./.github/action
         with:
-          publish: >- 
+          publish: >-
+            ${{ 
             github.ref == 'refs/heads/main' &&
             github.event_name == 'push' &&
             !startsWith(github.event.head_commit.message, 'ci')
+            }}
