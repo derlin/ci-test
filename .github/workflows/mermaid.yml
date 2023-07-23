@@ -1,0 +1,24 @@
+name: Mermaid Ink Test
+
+on:
+  push:
+    branches:
+      - mermaid-ink
+jobs:
+  lala:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+      - run: pip install requests
+      - run: |
+          python - <<EOF 
+          import requests
+          r = requests.get("https://mermaid.ink/img/eyJjb2RlIjogIiUle2luaXQ6IHsndGhlbWUnOiAnZGVmYXVsdCd9fSUlXG5mbG93Y2hhcnQgVEJcbiAgd2ViXG5cbiIsICJtZXJtYWlkIjogeyJ0aGVtZSI6ICJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6dHJ1ZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOnRydWV9")
+          print(f"got status: {r.status_code}")
+          print("headers:")
+          print(r.headers)
+          EOF
+
